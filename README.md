@@ -12,11 +12,9 @@ zoneless change detection and the new `@if` / `@for` control flow. The interface
 is responsive (a table on desktop, stacked cards on mobile) and follows the
 system light or dark theme.
 
+A live demo is available at [postal-code-check.vercel.app](https://postal-code-check.vercel.app).
+
 The source code is hosted on [GitHub](https://github.com/gowthamand/postal-code-check).
-
-## Live Demo
-
-Try it online at [postal-code-check.vercel.app](https://postal-code-check.vercel.app).
 
 ## Screenshots
 
