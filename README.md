@@ -28,14 +28,6 @@
 | Tests | Vitest + jsdom |
 | Hosting | Vercel |
 
-## API
-
-The app calls one public endpoint:
-
-| Request | Example | Returns |
-|---|---|---|
-| `GET https://api.postalpincode.in/pincode/{pin}` | `/pincode/110001` | List of post offices for the PIN |
-
 ## Configuration
 
 There are no environment variables or secrets.
