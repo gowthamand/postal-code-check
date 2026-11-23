@@ -1,12 +1,9 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
 
-import { PostOffice, PostalService } from './postal.service';
+import { PIN_PATTERN, PostalService } from './postal.service';
 
 type Status = 'idle' | 'loading' | 'success' | 'empty' | 'error';
-
-const PIN_PATTERN = /^[1-9]\d{5}$/;
 
 @Component({
   selector: 'app-root',
@@ -15,17 +12,24 @@ const PIN_PATTERN = /^[1-9]\d{5}$/;
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  private postalService = inject(PostalService);
-  private request?: Subscription;
-
   pincode = signal('');
-  status = signal<Status>('idle');
-  posts = signal<PostOffice[]>([]);
-  searchedPin = signal('');
   touched = signal(false);
+  searchedPin = signal<string | undefined>(undefined);
+
+  private result = inject(PostalService).postOffices(this.searchedPin);
 
   isValid = computed(() => PIN_PATTERN.test(this.pincode()));
   showError = computed(() => this.touched() && !this.isValid());
+
+  posts = computed(() => (this.result.hasValue() ? this.result.value() : []));
+
+  status = computed<Status>(() => {
+    if (!this.searchedPin()) return 'idle';
+    if (this.result.isLoading()) return 'loading';
+    if (this.result.error()) return 'error';
+    return this.posts().length ? 'success' : 'empty';
+  });
+
   summary = computed(() => {
     const first = this.posts()[0];
     return first ? `${first.District}, ${first.State}` : '';
@@ -37,24 +41,13 @@ export class AppComponent {
 
   search() {
     this.touched.set(true);
-    if (!this.isValid()) {
-      return;
-    }
+    if (!this.isValid()) return;
 
     const pin = this.pincode();
-    this.request?.unsubscribe();
-    this.status.set('loading');
-    this.searchedPin.set(pin);
-
-    this.request = this.postalService.getPostOffices(pin).subscribe({
-      next: (offices) => {
-        this.posts.set(offices);
-        this.status.set(offices.length ? 'success' : 'empty');
-      },
-      error: () => {
-        this.posts.set([]);
-        this.status.set('error');
-      },
-    });
+    if (pin === this.searchedPin()) {
+      this.result.reload();
+    } else {
+      this.searchedPin.set(pin);
+    }
   }
 }

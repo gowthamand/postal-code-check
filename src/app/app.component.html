@@ -22,7 +22,7 @@
         [attr.aria-invalid]="showError()"
         aria-describedby="pincode-hint"
       />
-      <button type="submit" [disabled]="status() === 'loading'">
+      <button type="submit" [attr.aria-busy]="status() === 'loading'">
         @if (status() === 'loading') {
           <span class="spinner" aria-hidden="true"></span> Searching
         } @else {

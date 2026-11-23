@@ -49,6 +49,7 @@ describe('AppComponent', () => {
     const { fixture, app, el } = setup();
     app.onInput('110001');
     app.search();
+    TestBed.tick();
     expect(app.status()).toBe('loading');
 
     http.expectOne(`${API}/110001`).flush([
@@ -68,10 +69,43 @@ describe('AppComponent', () => {
     expect(el.textContent).toContain('Central Delhi, Delhi');
   });
 
+  it('refetches when the same PIN is searched again', async () => {
+    const { fixture, app } = setup();
+    app.onInput('110001');
+    app.search();
+    TestBed.tick();
+    http.expectOne(`${API}/110001`).flush([{ Status: 'Error', Message: '', PostOffice: null }]);
+    await fixture.whenStable();
+
+    app.search();
+    TestBed.tick();
+    http.expectOne(`${API}/110001`).flush([{ Status: 'Error', Message: '', PostOffice: null }]);
+    await fixture.whenStable();
+    expect(app.status()).toBe('empty');
+  });
+
+  it('replaces an in-flight search with a new PIN', async () => {
+    const { fixture, app } = setup();
+    app.onInput('110001');
+    app.search();
+    TestBed.tick();
+    const first = http.expectOne(`${API}/110001`);
+
+    app.onInput('560001');
+    app.search();
+    TestBed.tick();
+    expect(first.cancelled).toBe(true);
+    http.expectOne(`${API}/560001`).flush([{ Status: 'Error', Message: '', PostOffice: null }]);
+    await fixture.whenStable();
+    expect(app.searchedPin()).toBe('560001');
+    expect(app.status()).toBe('empty');
+  });
+
   it('shows the empty state when no offices are found', async () => {
     const { fixture, app, el } = setup();
     app.onInput('999999');
     app.search();
+    TestBed.tick();
     http.expectOne(`${API}/999999`).flush([{ Status: 'Error', Message: 'No records found', PostOffice: null }]);
     await fixture.whenStable();
 
@@ -83,6 +117,7 @@ describe('AppComponent', () => {
     const { fixture, app, el } = setup();
     app.onInput('110001');
     app.search();
+    TestBed.tick();
     http.expectOne(`${API}/110001`).flush('fail', { status: 500, statusText: 'Server Error' });
     await fixture.whenStable();
 

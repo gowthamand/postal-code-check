@@ -1,6 +1,5 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Injectable, Signal } from '@angular/core';
+import { httpResource } from '@angular/common/http';
 
 export interface PostOffice {
   Name: string;
@@ -18,15 +17,22 @@ export interface PincodeResponse {
   PostOffice: PostOffice[] | null;
 }
 
+export const PIN_PATTERN = /^[1-9]\d{5}$/;
+
 const API_URL = 'https://api.postalpincode.in/pincode';
 
 @Injectable({ providedIn: 'root' })
 export class PostalService {
-  private http = inject(HttpClient);
-
-  getPostOffices(pincode: string): Observable<PostOffice[]> {
-    return this.http
-      .get<PincodeResponse[]>(`${API_URL}/${encodeURIComponent(pincode)}`)
-      .pipe(map((res) => res[0]?.PostOffice ?? []));
+  postOffices(pin: Signal<string | undefined>) {
+    return httpResource<PostOffice[]>(
+      () => {
+        const code = pin();
+        return code ? `${API_URL}/${encodeURIComponent(code)}` : undefined;
+      },
+      {
+        parse: (raw) => (raw as PincodeResponse[])[0]?.PostOffice ?? [],
+        defaultValue: [],
+      }
+    );
   }
 }

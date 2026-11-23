@@ -94,13 +94,12 @@ button {
   cursor: pointer;
 }
 
-button:hover:not(:disabled) {
+button:hover {
   background: var(--primary-hover);
 }
 
-button:disabled {
-  opacity: 0.75;
-  cursor: progress;
+button[aria-busy='true'] {
+  opacity: 0.85;
 }
 
 small {
@@ -247,7 +246,7 @@ button {
   transition: background 0.15s, transform 0.1s;
 }
 
-button:active:not(:disabled) {
+button:active {
   transform: scale(0.97);
 }
 
