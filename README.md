@@ -1,4 +1,4 @@
-# <a href="https://github.com/gowthamand/postal-code-check">Postal Code Check: Indian PIN Code Search</a>
+# <a href="https://github.com/gowthamand/postal-code-check">Postal Code Check, Indian PIN Code Search</a>
 
 [![Angular](https://img.shields.io/badge/Angular-22-DD0031.svg)](#)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6.svg)](#)
@@ -30,12 +30,10 @@
 
 ## Configuration
 
-There are no environment variables or secrets.
+There are no environment variables or secrets. Node.js 22 or newer is required.
 
 | File | Purpose |
 |---|---|
-| `.nvmrc` | Pins Node.js 22.23.2 (Angular 22 needs Node 22 or newer) |
-| `.npmrc` | `legacy-peer-deps=true` (works around an npm 10 bug with Vitest's optional peers) |
 | `vercel.json` | Build command, output folder and single-page-app rewrite for Vercel |
 
 ## Run Locally
@@ -44,7 +42,6 @@ There are no environment variables or secrets.
 git clone https://github.com/gowthamand/postal-code-check
 cd postal-code-check
 
-nvm use
 npm install
 npm start
 ```
