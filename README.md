@@ -1,4 +1,4 @@
-# <a href="https://github.com/gowthamand/postal-code-check">Postal Code Check: Indian PIN Code Search</a>
+# Postal Code Check
 
 [![Angular](https://img.shields.io/badge/Angular-22-DD0031.svg)](#)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6.svg)](#)
