@@ -14,6 +14,10 @@ system light or dark theme.
 
 The source code is hosted on [GitHub](https://github.com/gowthamand/postal-code-check).
 
+## Live Demo
+
+Try it online at [postal-code-check.vercel.app](https://postal-code-check.vercel.app).
+
 ## Screenshots
 
 ### Desktop
