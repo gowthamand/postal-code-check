@@ -246,6 +246,13 @@ tbody tr:hover {
   animation: shimmer 1.2s infinite;
 }
 
+footer {
+  margin-top: 36px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--muted);
+}
+
 .hero,
 .search {
   animation: fade-up 0.5s ease-out both;

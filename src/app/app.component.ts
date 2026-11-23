@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { BUILD_TIME } from './build-info';
 import { PIN_PATTERN, PostalService } from './postal.service';
 
 type Status = 'idle' | 'loading' | 'success' | 'empty' | 'error';
@@ -12,6 +13,12 @@ type Status = 'idle' | 'loading' | 'success' | 'empty' | 'error';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
+  readonly buildTime = BUILD_TIME;
+  readonly buildTimeLabel = new Intl.DateTimeFormat(undefined, {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  }).format(new Date(BUILD_TIME));
+
   pincode = signal('');
   touched = signal(false);
   searchedPin = signal<string | undefined>(undefined);
