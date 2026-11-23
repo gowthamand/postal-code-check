@@ -1,27 +1,106 @@
-<div class="container">
-  <h1>Indian PIN Code Search</h1>
-  <form>
-    <label for="postalcode">Pincode:</label><br/>
-    <input type="number" id="postalcode" autocomplete="off" name="postalcode" value="Doe"/><br/><br/>
-    <input type="submit" (click)="continue()" [ngClass]="{'submitted': !submit, 'loader': !submit}" value="Submit"/> <span [class.loader]=""></span>
+<main class="page">
+  <header class="hero">
+    <span class="badge">India Post</span>
+    <h1>PIN Code Search</h1>
+    <p>Find every post office for a 6-digit Indian PIN code.</p>
+  </header>
+
+  <form class="search card" (ngSubmit)="search()" novalidate>
+    <label for="pincode">PIN code</label>
+    <div class="search-row">
+      <input
+        id="pincode"
+        name="pincode"
+        inputmode="numeric"
+        autocomplete="postal-code"
+        placeholder="e.g. 110001"
+        maxlength="6"
+        [ngModel]="pincode()"
+        (ngModelChange)="onInput($event)"
+        (blur)="touched.set(true)"
+        [class.invalid]="showError()"
+        [attr.aria-invalid]="showError()"
+        aria-describedby="pincode-hint"
+      />
+      <button type="submit" [disabled]="status() === 'loading'">
+        @if (status() === 'loading') {
+          <span class="spinner" aria-hidden="true"></span> Searching
+        } @else {
+          Search
+        }
+      </button>
+    </div>
+    <small id="pincode-hint" [class.error-text]="showError()">
+      {{ showError() ? 'Enter a valid 6-digit PIN code (cannot start with 0).' : '6 digits, e.g. 560001' }}
+    </small>
   </form>
 
-  <br/>
+  <section class="results" aria-live="polite">
+    @switch (status()) {
+      @case ('loading') {
+        <div class="card skeleton-list">
+          @for (row of [1, 2, 3, 4]; track row) {
+            <div class="skeleton"></div>
+          }
+        </div>
+      }
+      @case ('error') {
+        <div class="card message error">
+          <strong>Something went wrong.</strong>
+          <span>We couldn't reach the postal service. Check your connection and try again.</span>
+        </div>
+      }
+      @case ('empty') {
+        <div class="card message">
+          <strong>No post offices found</strong>
+          <span>There are no results for PIN code {{ searchedPin() }}.</span>
+        </div>
+      }
+      @case ('success') {
+        <div class="results-head">
+          <div>
+            <h2>{{ searchedPin() }}</h2>
+            <p>{{ summary() }}</p>
+          </div>
+          <span class="count">{{ posts().length }} post office{{ posts().length === 1 ? '' : 's' }}</span>
+        </div>
 
-  <table id="customers">
-    <tr>
-      <th>Name</th>
-      <th>BranchType</th>
-      <th>District</th>
-      <th>State</th>
-      <th>Region</th>
-    </tr>
-    <tr *ngFor="let post of posts; let i = index">
-      <td>{{post.Name}}</td>
-      <td>{{post.BranchType}}</td>
-      <td>{{post.District}}</td>
-      <td>{{post.State}}</td>
-      <td>{{post.Region}}</td>
-    </tr>
-  </table>
-</div>
+        <div class="card table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Delivery</th>
+                <th>District</th>
+                <th>State</th>
+                <th>Region</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (post of posts(); track $index) {
+                <tr>
+                  <td data-label="Name" class="name">{{ post.Name }}</td>
+                  <td data-label="Type">
+                    <span class="tag" [class.head]="post.BranchType === 'Head Post Office'">{{ post.BranchType }}</span>
+                  </td>
+                  <td data-label="Delivery">{{ post.DeliveryStatus }}</td>
+                  <td data-label="District">{{ post.District }}</td>
+                  <td data-label="State">{{ post.State }}</td>
+                  <td data-label="Region">{{ post.Region }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+      @default {
+        <div class="card message muted">
+          <span>Results will appear here.</span>
+        </div>
+      }
+    }
+  </section>
+
+  <footer>Data from <a href="https://api.postalpincode.in" target="_blank" rel="noopener">api.postalpincode.in</a></footer>
+</main>

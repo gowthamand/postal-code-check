@@ -1,27 +1,120 @@
-# AngularPostalPin
+# Angular Postal PIN
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.3.
+## What is Angular Postal PIN?
 
-## Development server
+Angular Postal PIN is a small, single-page Angular application that looks up
+**Indian postal PIN codes**. Enter a 6-digit PIN code and the app lists every
+post office that serves it — name, branch type, district, state and region —
+using the public [Postal PIN Code API](https://api.postalpincode.in).
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+It is built with standalone components, signals and the new `@for` control flow,
+and runs zoneless on the latest Angular.
 
-## Code scaffolding
+## Release Information
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+| Item              | Version  |
+| ----------------- | -------- |
+| Angular           | 22.x     |
+| Angular CLI       | 22.x     |
+| TypeScript        | 6.0.x    |
+| RxJS              | 7.8.x    |
+| Test runner       | Vitest 4 |
 
-## Build
+### Changelog
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **Angular 12 → 22 upgrade**
+  - Switched to the `@angular/build:application` builder (esbuild/Vite).
+  - Replaced `AppModule` with standalone `bootstrapApplication` + `provideHttpClient()`.
+  - Removed `zone.js`, `polyfills.ts` and environment files (zoneless by default).
+  - Component state moved to signals; template uses `@for` and `ngModel`.
+  - Typed `PostalService` responses (`PincodeResponse`, `PostOffice`).
+  - Replaced Karma/Jasmine with Vitest + jsdom; specs rewritten to cover the search flow.
+- Fixes a build failure on modern Node (`ERR_OSSL_EVP_UNSUPPORTED`) caused by Angular 12's webpack.
 
-## Running unit tests
+## Server Requirements
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **Node.js** `^22.22.3`, `^24.15.0` or `>=26.0.0` (pinned to 22.23.2 in `.nvmrc`)
+- **npm** 10 or newer
+- Network access to `https://api.postalpincode.in` at runtime
 
-## Running end-to-end tests
+> Angular 22 does **not** run on Node 20 or earlier. With nvm, run `nvm use` in the project root.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Installation
+
+```bash
+nvm use
+```
+
+```bash
+npm install
+```
+
+The project ships an `.npmrc` with `legacy-peer-deps=true`; this works around an
+npm 10 resolver bug (`Cannot read properties of null (reading 'edgesOut')`)
+triggered by Vitest's optional peer dependencies.
+
+## Usage
+
+### Development server
+
+```bash
+npm start
+```
+
+Open `http://localhost:4200/`. The app reloads automatically when source files change.
+
+### Build
+
+```bash
+npm run build
+```
+
+Production artifacts are written to `dist/angular-postal-pin/browser/`.
+
+### Running unit tests
+
+```bash
+npm test -- --watch=false
+```
+
+### Code scaffolding
+
+```bash
+npx ng generate component component-name
+```
+
+## Project Structure
+
+```
+src/
+├── main.ts                    # bootstrapApplication + providers
+├── index.html
+├── styles.css
+└── app/
+    ├── app.component.ts       # search form state (signals)
+    ├── app.component.html     # form + results table
+    ├── app.component.css
+    ├── app.component.spec.ts  # Vitest specs
+    └── postal.service.ts      # Postal PIN Code API client
+```
+
+## Build Verification
+
+Last verified on Node 22.23.2:
+
+| Check                    | Result                                   |
+| ------------------------ | ---------------------------------------- |
+| `npm run build`          | ✔ Success — initial bundle 194 kB (54 kB gzipped) |
+| `npm test`               | ✔ 3 / 3 tests passed                     |
+| Manual check (`110001`)  | ✔ Post offices listed in the results table |
+
+## Resources
+
+- [Angular documentation](https://angular.dev)
+- [Angular CLI reference](https://angular.dev/cli)
+- [Angular update guide](https://angular.dev/update-guide)
+- [Postal PIN Code API](https://api.postalpincode.in)
 
 ## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Run `npx ng help` or see the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli).
