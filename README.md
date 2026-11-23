@@ -16,9 +16,13 @@ The source code is hosted on [GitHub](https://github.com/gowthamand/postal-code-
 
 ## Screenshots
 
-| Desktop | Mobile |
-| ------- | ------ |
-| <img src="docs/screenshots/desktop.jpg" alt="Desktop view showing post offices for PIN 110001 in a table" width="560"> | <img src="docs/screenshots/mobile.jpg" alt="Mobile view showing post offices as stacked cards" width="220"> |
+### Desktop
+
+<img src="docs/screenshots/desktop.jpg" alt="Desktop view showing post offices for PIN 110001 in a table" width="800">
+
+### Mobile
+
+<img src="docs/screenshots/mobile.jpg" alt="Mobile view showing post offices as stacked cards" width="320">
 
 ## Important Change with Angular 22
 
