@@ -5,7 +5,7 @@
 [![Node.js](https://img.shields.io/badge/Node.js-22-339933.svg)](#)
 [![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000000.svg)](https://postal-code-check.vercel.app/)
 
-<a href="https://postal-code-check.vercel.app/"><img src="docs/screenshots/live-demo.svg" width="24" height="24" align="absmiddle" alt=""> <b>Live Demo</b></a>
+<a href="https://postal-code-check.vercel.app/" target="_blank" rel="noopener noreferrer"><img src="docs/screenshots/live-demo.svg" width="24" height="24" align="absmiddle" alt=""> <b>Live Demo</b></a>
 
 ## Key Features
 
