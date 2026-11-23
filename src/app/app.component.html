@@ -79,7 +79,7 @@
             </thead>
             <tbody>
               @for (post of posts(); track $index) {
-                <tr>
+                <tr [style.animation-delay.ms]="$index < 12 ? $index * 40 : 480">
                   <td data-label="Name" class="name">{{ post.Name }}</td>
                   <td data-label="Type">
                     <span class="tag" [class.head]="post.BranchType === 'Head Post Office'">{{ post.BranchType }}</span>
