@@ -19,7 +19,7 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              { "glob": "favicon.ico", "input": "src", "output": "/" }
+              { "glob": "favicon.svg", "input": "src", "output": "/" }
             ],
             "styles": ["src/styles.css"]
           },
