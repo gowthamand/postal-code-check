@@ -305,6 +305,12 @@ button:active {
 @media (max-width: 640px) {
   .page { padding-top: 28px; }
 
+  .results-head { flex-wrap: wrap; }
+
+  .head-text { flex-basis: calc(100% - 66px); }
+
+  .count { margin-left: 66px; }
+
   thead { display: none; }
 
   tr {
