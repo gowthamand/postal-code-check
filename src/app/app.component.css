@@ -17,8 +17,7 @@
 
 .hero p,
 small,
-.results-head p,
-footer {
+.results-head p {
   color: var(--muted);
   margin: 0;
 }
@@ -218,12 +217,6 @@ tbody tr:hover {
   background: linear-gradient(90deg, var(--border), var(--bg), var(--border));
   background-size: 200% 100%;
   animation: shimmer 1.2s infinite;
-}
-
-footer {
-  margin-top: 32px;
-  text-align: center;
-  font-size: 13px;
 }
 
 @keyframes spin {
